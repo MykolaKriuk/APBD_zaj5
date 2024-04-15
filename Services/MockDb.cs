@@ -1,5 +1,4 @@
 using APBD_zaj5.Classes;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace APBD_zaj5.Services;
 
@@ -56,8 +55,6 @@ public class MockDb : IMockDb
 
     public bool Edit(Pet petEdit)
     {
-        // if (id != petEdit.Id) return false;
-
         var pet = _pets.FirstOrDefault(p => p.Id == petEdit.Id);
         if (pet == null) return false;
 
