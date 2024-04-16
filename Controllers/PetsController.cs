@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace APBD_zaj5.Controllers;
 
 [ApiController]
-[Route("vetClinic")]
+[Route("pets")]
 public class PetsController : ControllerBase
 {
     private IMockDb _mockDb;
@@ -24,6 +24,7 @@ public class PetsController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult Get(int id)
     {
+        if (_mockDb.Get(id) == null) return NotFound();
         return Ok(_mockDb.Get(id));
     }
 
@@ -37,15 +38,26 @@ public class PetsController : ControllerBase
         return Ok("Pet is added");
     }
 
-    [HttpPut]
-    public IActionResult Edit(Pet petEdit)
+    [HttpPut("{id}")]
+    public IActionResult Edit(int id, Pet petEdit)
     {
-        return Ok(_mockDb.Edit(petEdit));
+        
+        // if (_mockDb.Get(id) == null) return NotFound();
+        var check = _mockDb.Edit(id, petEdit);
+        return check ? Ok($"Pet {id} is edited.") : NotFound();
     }
 
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        return Ok(_mockDb.Delete(id));
+        var check = _mockDb.Delete(id);
+        return check ? Ok($"Pet {id} is deleted.") : NotFound();
     }
+    
+    // [HttpGet("{id}")]
+    // public IActionResult GetVisits(int id)
+    // {
+    //     if (_mockDb.GetVisitsByPetId(id).Count == 0) return NotFound();
+    //     return Ok(_mockDb.GetVisitsByPetId(id));
+    // }
 }
